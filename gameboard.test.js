@@ -3,6 +3,7 @@ import { Gameboard } from './gameboard.js';
 test('Gameboard has a board and ships', () => {
     const gameboard = new Gameboard();
     expect(gameboard.board).toEqual({
+        0: Array(10).fill(null),
         1: Array(10).fill(null),
         2: Array(10).fill(null),
         3: Array(10).fill(null),
@@ -11,11 +12,12 @@ test('Gameboard has a board and ships', () => {
         6: Array(10).fill(null),
         7: Array(10).fill(null),
         8: Array(10).fill(null),
-        9: Array(10).fill(null),
-        10: Array(10).fill(null)
+        9: Array(10).fill(null)
     });
     expect(gameboard.ships).toEqual([]);
 });
+
+//placeShip tests
 
 test('Gameboard can place a ship', () => {
     const gameboard = new Gameboard();
@@ -46,4 +48,37 @@ test('Gameboard cant place a ship outside the board', () => {
     expect(gameboard.ships.length).toBe(0);
     gameboard.placeShip(9, 9, 3, 'vertical');
     expect(gameboard.ships.length).toBe(0);
+});
+
+//receiveAttack tests
+
+test('Gameboard can receive an attack', () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(0, 0, 3, 'horizontal');
+    gameboard.receiveAttack(0, 0);
+    expect(gameboard.board[0][0]).toBe('hit');
+    gameboard.receiveAttack(1, 0);
+    expect(gameboard.board[1][0]).toBe('miss');
+});
+
+test('Gameboard can receive an attack and sink a ship', () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(0, 0, 3, 'horizontal');
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+    expect(gameboard.ships[0].isSunk).toBe(true);
+});
+
+test('Gameboard can recieve an attack and determine if all ships are sunk', () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(0, 0, 3, 'horizontal');
+    gameboard.placeShip(1, 0, 3, 'horizontal');
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(0, 2);
+    gameboard.receiveAttack(1, 0);
+    gameboard.receiveAttack(1, 1);
+    gameboard.receiveAttack(1, 2);
+    expect(gameboard.allShipsSunk()).toBe(true);
 });
