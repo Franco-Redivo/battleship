@@ -20,7 +20,7 @@ export class Gameboard {
         const ship = new Ship(length);
         const coordinates = [];
         for(let i = 0; i < length; i++){
-            if(this.shipAlreadyPlaced(x,y,i,direction)){
+            if(this.shipAlreadyPlaced(x,y,i,direction) || this.shipOverFlowsBoard(x,y,i,direction)){
                 return;
             }
             if(direction === 'horizontal'){
@@ -42,6 +42,19 @@ export class Gameboard {
             }
         } else {
             if(this.board[x + i + 1][y] === 'ship'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    shipOverFlowsBoard(x,y,i,direction){
+        if(direction === 'horizontal'){
+            if(y + i > 9){
+                return true;
+            }
+        } else {
+            if(x + i > 9){
                 return true;
             }
         }
