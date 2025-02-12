@@ -3,6 +3,7 @@ import { Ship } from './ship.js';
 export class Gameboard {
     constructor(){
         this.board = {
+            0: Array(10).fill(null),
             1: Array(10).fill(null),
             2: Array(10).fill(null),
             3: Array(10).fill(null),
@@ -11,8 +12,7 @@ export class Gameboard {
             6: Array(10).fill(null),
             7: Array(10).fill(null),
             8: Array(10).fill(null),
-            9: Array(10).fill(null),
-            10: Array(10).fill(null)}
+            9: Array(10).fill(null)}
         this.ships = [];
     }
 
@@ -25,10 +25,10 @@ export class Gameboard {
             }
             if(direction === 'horizontal'){
                 coordinates.push([x, y + i]);
-                this.board[x + 1][y + i] = 'ship';
+                this.board[x][y + i] = 'ship';
             } else {
                 coordinates.push([x + i, y]);
-                this.board[x + i + 1][y] = 'ship';
+                this.board[x + i][y] = 'ship';
             }
         }
         ship.coordinates = coordinates;
@@ -37,11 +37,11 @@ export class Gameboard {
 
     shipAlreadyPlaced(x,y,i,direction){
         if(direction === 'horizontal'){
-            if(this.board[x + 1][y + i] === 'ship'){
+            if(this.board[x][y + i] === 'ship'){
                 return true;
             }
         } else {
-            if(this.board[x + i + 1][y] === 'ship'){
+            if(this.board[x + i][y] === 'ship'){
                 return true;
             }
         }
@@ -59,5 +59,30 @@ export class Gameboard {
             }
         }
         return false;
+    }
+
+    receiveAttack(x,y){
+        if(this.board[x][y] === 'ship'){
+            this.board[x][y] = 'hit';
+            this.ships.forEach(ship => {
+                ship.coordinates.forEach(coord => {
+                    if(coord[0] === x && coord[1] === y){
+                        ship.hit();
+                    }
+                });
+            });
+            if(this.allShipsSunk()){
+                return 'all ships sunk';
+            }
+
+            return 'hit';
+        } else {
+            this.board[x][y] = 'miss';
+            return 'miss';
+        }
+    }
+
+    allShipsSunk(){
+        return this.ships.every(ship => ship.isSunk);
     }
 }
