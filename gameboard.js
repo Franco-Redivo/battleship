@@ -20,15 +20,15 @@ export class Gameboard {
         const ship = new Ship(length);
         const coordinates = [];
         for(let i = 0; i < length; i++){
-            if(this.shipAlreadyPlaced(x,y,i,direction) || this.shipOverFlowsBoard(x,y,i,direction)){
+            if(this.shipOverFlowsBoard(x,y,i,direction) || this.shipAlreadyPlaced(x,y,i,direction)){
                 return;
             }
             if(direction === 'horizontal'){
-                coordinates.push([x, y + i]);
-                this.board[x][y + i] = 'ship';
-            } else {
                 coordinates.push([x + i, y]);
                 this.board[x + i][y] = 'ship';
+            } else {
+                coordinates.push([x, y + i]);
+                this.board[x][y + i] = 'ship';
             }
         }
         ship.coordinates = coordinates;
@@ -37,11 +37,11 @@ export class Gameboard {
 
     shipAlreadyPlaced(x,y,i,direction){
         if(direction === 'horizontal'){
-            if(this.board[x][y + i] === 'ship'){
+            if(this.board[x + i][y] === 'ship'){
                 return true;
             }
         } else {
-            if(this.board[x + i][y] === 'ship'){
+            if(this.board[x][y + i] === 'ship'){
                 return true;
             }
         }
@@ -50,11 +50,11 @@ export class Gameboard {
 
     shipOverFlowsBoard(x,y,i,direction){
         if(direction === 'horizontal'){
-            if(y + i > 9){
+            if(x + i > 9){
                 return true;
             }
         } else {
-            if(x + i > 9){
+            if(y + i > 9){
                 return true;
             }
         }
