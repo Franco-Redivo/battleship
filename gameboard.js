@@ -68,6 +68,7 @@ export class Gameboard {
                 ship.coordinates.forEach(coord => {
                     if(coord[0] === x && coord[1] === y){
                         ship.hit();
+                        ship.checkIfSunk();
                     }
                 });
             });
@@ -81,6 +82,22 @@ export class Gameboard {
             return 'miss';
         }
     }
+
+    shipSunk(x,y){
+        this.ships.forEach(ship => {
+            ship.coordinates.forEach(coord => {
+                if(coord[0] === x && coord[1] === y){
+                    if(ship.isSunk){
+                        return true;
+                    }
+                }
+            });
+        });
+        return false;
+
+    }
+
+
 
     allShipsSunk(){
         return this.ships.every(ship => ship.isSunk);
