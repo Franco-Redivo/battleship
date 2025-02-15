@@ -35,6 +35,23 @@ export class Gameboard {
         this.ships.push(ship);
     }
 
+    isValidPlacement(x, y, length, direction){
+        for (let i = -1; i <= length; i++) {
+            for (let j = -1; j <= 1; j++) {
+                let checkX = x + (direction === 'horizontal' ? i : j);
+                let checkY = y + (direction === 'horizontal' ? j : i);
+    
+                // Ignore out-of-bounds checks
+                if (checkX >= 0 && checkX < 10 && checkY >= 0 && checkY < 10) {
+                    if (this.board[checkX][checkY] === 'ship') {
+                        return false; // Found a nearby ship, placement is invalid
+                    }
+                }
+            }
+        }
+        return true; // Placement is valid
+    }
+
     shipAlreadyPlaced(x,y,i,direction){
         if(direction === 'horizontal'){
             if(this.board[x + i][y] === 'ship'){
@@ -101,5 +118,14 @@ export class Gameboard {
 
     allShipsSunk(){
         return this.ships.every(ship => ship.isSunk);
+    }
+
+    clearBoard(){
+        for(let i = 0; i < 10; i++){
+            for(let j = 0; j < 10; j++){
+                this.board[i][j] = null;
+            }
+        }
+        this.ships = [];
     }
 }
