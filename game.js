@@ -13,15 +13,6 @@ player.placeAllShipsRandomly();
 
 enemy.placeAllShipsRandomly();
 
-// player.receiveAttack(0,0);
-// player.receiveAttack(0,1);
-// player.receiveAttack(1,0);
-// player.receiveAttack(2,0);
-// player.receiveAttack(3,0);
-// player.receiveAttack(4,0);
-
-
-
 
 generatePlayerGrid(player.gameboard);
 generateEnemyGrid(enemy.gameboard);
