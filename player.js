@@ -54,8 +54,13 @@ export class Player {
     }
 
     receiveAttackRandomly(){
-        let x = Math.floor(Math.random() * 10);
-        let y = Math.floor(Math.random() * 10);
+        let x , y;
+
+        do{
+            x = Math.floor(Math.random() * 10);
+            y = Math.floor(Math.random() * 10);
+        } while(this.gameboard.board[x][y] !== null && this.gameboard.board[x][y] !== 'ship');
+
         this.gameboard.receiveAttack(x, y);
     }
 
