@@ -50,6 +50,10 @@ export function generateEnemyGrid(gameboard){
             let cell = document.createElement('div');
             cell.classList.add('enemy-cell');
 
+            if(gameboard.board[j][i] !== null && gameboard.board[j][i] !== 'ship'){
+                cell.classList.add('played');
+            }
+
             if(gameboard.board[j][i] === 'miss'){
                 cell.classList.add('miss');
             } else if(gameboard.board[j][i] === 'hit'){
