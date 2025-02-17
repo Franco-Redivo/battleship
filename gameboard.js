@@ -78,21 +78,28 @@ export class Gameboard {
         return false;
     }
 
-    receiveAttack(x,y){
+    receiveAttack(x, y){
+        x = Number(x);  // Convert to number
+        y = Number(y);  // Convert to number
+    
         if(this.board[x][y] === 'ship'){
             this.board[x][y] = 'hit';
+            
             this.ships.forEach(ship => {
                 ship.coordinates.forEach(coord => {
-                    if(coord[0] === x && coord[1] === y){
-                        ship.hit();
+                    if(coord[0] === x && coord[1] === y){  
+                        console.log(`Ship hit at (${x}, ${y})`);
+                        ship.hit();  // ✅ Increase the hit counter
                         ship.checkIfSunk();
+                        
                     }
                 });
             });
+    
             if(this.allShipsSunk()){
                 return 'all ships sunk';
             }
-
+    
             return 'hit';
         } else {
             this.board[x][y] = 'miss';
@@ -117,7 +124,7 @@ export class Gameboard {
 
 
     allShipsSunk(){
-        return this.ships.every(ship => ship.isSunk);
+        return this.ships.length > 0 && this.ships.every(ship => ship.isSunk);
     }
 
     clearBoard(){
